@@ -1,0 +1,32 @@
+const express = require('express');
+const pool = require('../db');
+const router = express.Router();
+
+// Criar conta para um usuário
+router.post('/', async (req, res) => {
+  const { usuario_id } = req.body;
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO contas (usuario_id) VALUES ($1) RETURNING *',
+      [usuario_id]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ erro: err.message });
+  }
+});
+
+// Ver saldo da conta
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('SELECT id, saldo FROM contas WHERE id = $1', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ erro: 'Conta não encontrada' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ erro: err.message });
+  }
+});
+
+module.exports = router;

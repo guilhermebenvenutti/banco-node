@@ -1,0 +1,38 @@
+services:
+  postgres_local: 
+    image: postgres:15-alpine
+    container_name: guigostosaof 
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: guigostoso
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d guigostoso"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - banco_guigostoso
+
+  backend:
+    networks:
+      - banco_guigostoso
+    build:
+      context: ./Back
+      dockerfile: Dockerfile
+    container_name: guigostosaob
+    environment:
+       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres_local: 
+        condition: service_healthy
+    
+    command: npm run start
+
+networks:
+  banco_guigostoso:

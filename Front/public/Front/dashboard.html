@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco Simples - Dashboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Banco Simples</h1>
+    <h2>Olá, <span id="nomeUsuario">Usuário</span></h2>
+    
+    <div style="margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.15); border-radius: 10px;">
+      <p>Saldo Atual</p>
+      <h3 id="saldo">R$ 0,00</h3>
+    </div>
+
+    <button onclick="window.location.href='../transferencia/transferencia.html'">Fazer Transferência</button>
+    <button onclick="logout()">Sair</button>
+
+    <h3 style="margin-top: 30px;">Histórico de Transações</h3>
+    <div id="historico" style="text-align: left; margin-top: 15px;"></div>
+  </div>
+
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>
