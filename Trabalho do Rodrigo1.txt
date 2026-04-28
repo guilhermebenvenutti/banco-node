@@ -1,0 +1,67 @@
+O meu sistema bancário desenvolvido possui 3 principais funcionalidades:
+
+1. Gerenciamento de Usuários (Cadastro e Login)
+Regras de Negócio:
+
+O CPF deve ser único E conter exatamente 11 dígitos numéricos.
+A senha deve ser armazenada de forma criptografada (hash).
+Um usuário só pode ter uma conta cadastrada.
+Não é permitido cadastrar usuários com CPF inválido ou já existente.
+
+Casos de Teste:
+
+(Teste de Integração)
+T1 - Cadastro de usuário com sucesso
+Dado um CPF inexistente, nome e senha válidos, quando o usuário tenta se cadastrar, então o sistema deve criar o usuário e retornar status 201.
+
+(Teste de Integração)
+T2 - Tentativa de cadastro com CPF duplicado 
+Dado um CPF já cadastrado no sistema, quando o usuário tenta se cadastrar novamente com o mesmo CPF, então o sistema deve rejeitar a operação e retornar erro de "CPF já cadastrado".
+
+---------------------------------------------------------------------------------------=//=--------------------------------------------------------------------------------
+
+2. Gerenciamento de Contas Bancárias
+Regras de Negócio:
+
+Toda conta está vinculada a um único usuário.
+O saldo inicial da conta deve ser R$ 0,00.
+Não é permitido ter saldo negativo.
+Ao excluir um usuário, suas contas devem ser excluídas automaticamente (ON DELETE CASCADE).
+
+Casos de Teste:
+
+(Teste de Integração)
+T3 - Criação automática de conta após cadastro 
+Dado um novo usuário cadastrado com sucesso, quando o sistema cria a conta vinculada, então a conta deve ser gerada com saldo igual a zero.
+
+(Teste Unitário)
+T4 - Tentativa de criar conta com saldo negativo 
+Dado uma tentativa de criar ou atualizar uma conta com saldo negativo, quando a operação é realizada, então o sistema deve bloquear a ação devido à constraint CHECK (saldo >= 0).
+
+---------------------------------------------------------------------------------------=//=--------------------------------------------------------------------------------
+
+3. Realização de Transferências
+Regras de Negócio:
+
+A transferência só pode ser realizada se a conta de origem tiver saldo suficiente.
+O valor da transferência deve ser maior que zero.
+Não é permitido transferir para a mesma conta (origem = destino).
+Toda transferência deve ser registrada na tabela de transações.
+
+Casos de Teste:
+
+(Teste de Integração)
+T5 - Transferência realizada com sucesso 
+Dado uma conta de origem com saldo suficiente e uma conta de destino válida, quando é realizada uma transferência, então o valor deve ser debitado da origem, creditado no destino e registrado na tabela de transações.
+
+(Teste de Integração)
+T6 - Transferência com saldo insuficiente 
+Dado uma conta de origem com saldo inferior ao valor da transferência, quando o usuário tenta realizar a operação, então o sistema deve rejeitar a transferência e retornar mensagem de "Saldo insuficiente".
+
+---------------------------------------------------------------------------------------=//=--------------------------------------------------------------------------------
+
+Classificação dos Testes:
+
+Testes Unitários: T4
+Testes de Integração: T1, T2, T3, T5, T6
+Testes E2E: Nenhum
