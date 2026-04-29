@@ -27,7 +27,9 @@ services:
        DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_local:5432/${POSTGRES_DB}
 
     ports:
-      - "8000:8000"
+      - "3000:3000"
+    volumes:
+      - ./Front/public/Front:/app/src/public
     depends_on:
       postgres_local: 
         condition: service_healthy
