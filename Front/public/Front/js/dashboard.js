@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
     
     if (!usuario) {
-        window.location.href = '../index/index.html';
+        window.location.href = '../index.html';
         return;
     }
 
