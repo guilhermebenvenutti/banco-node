@@ -56,9 +56,3 @@ document.getElementById('cadastroForm')?.addEventListener('submit', async (e) =>
         mensagem.textContent = 'Erro de conexão com o servidor';
     }
 });
-
-// Função de logout (usada no dashboard)
-function logout() {
-    localStorage.removeItem('usuario');
-    window.location.href = 'index.html';
-}
