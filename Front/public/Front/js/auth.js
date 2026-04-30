@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://52.15.204.177:3000/api';
 
 // ====================== LOGIN ======================
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
@@ -19,7 +19,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             localStorage.setItem('usuario', JSON.stringify(data.usuario));
-            window.location.href = '../dashboard.html';
+            window.location.href = 'dashboard.html';
         } else {
             mensagem.textContent = data.erro || 'CPF ou senha inválidos';
         }
@@ -48,7 +48,7 @@ document.getElementById('cadastroForm')?.addEventListener('submit', async (e) =>
 
         if (response.ok) {
             alert('Cadastro realizado com sucesso! Faça login.');
-            window.location.href = '../index.html';
+            window.location.href = 'index.html';
         } else {
             mensagem.textContent = data.erro || 'Erro ao cadastrar';
         }
@@ -60,5 +60,5 @@ document.getElementById('cadastroForm')?.addEventListener('submit', async (e) =>
 // Função de logout (usada no dashboard)
 function logout() {
     localStorage.removeItem('usuario');
-    window.location.href = '../index.html';
+    window.location.href = 'index.html';
 }
