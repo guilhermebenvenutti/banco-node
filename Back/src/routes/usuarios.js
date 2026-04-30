@@ -17,6 +17,7 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({ mensagem: 'Usuário criado com sucesso', usuario: result.rows[0] });
   } catch (err) {
+    console.error("### ERRO REAL DO BANCO ###", err);
     if (err.code === '23505') { // unique violation (cpf duplicado)
       return res.status(400).json({ erro: 'CPF já cadastrado' });
     }

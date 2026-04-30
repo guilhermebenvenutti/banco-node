@@ -1,8 +1,8 @@
 services:
-  postgres_local: 
+  postgres_local:
     image: postgres:15-alpine
-    container_name: guigostosaof 
-    environment: 
+    container_name: guigostosaobanco
+    environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: guigostoso
@@ -24,17 +24,29 @@ services:
       dockerfile: Dockerfile
     container_name: guigostosaob
     environment:
-       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_local:5432/${POSTGRES_DB}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=guigostoso
+      - DB_HOST=postgres_local
+      - DB_PORT=5432
 
     ports:
       - "3000:3000"
-    volumes:
-      - ./Front/public/Front:/app/src/public
+      
     depends_on:
-      postgres_local: 
+      postgres_local:
         condition: service_healthy
-    
     command: npm run start
+
+  frontend:
+    networks:
+      - banco_guigostoso
+    build:
+      context: ./Front/public
+      dockerfile: Dockerfile
+    container_name: guigostosaof
+    ports:
+      - "3001:3001"
 
 networks:
   banco_guigostoso:

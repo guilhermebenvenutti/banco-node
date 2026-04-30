@@ -6,7 +6,7 @@ const pool = new Pool({
   host: process.env.DB_HOST,
   database: process.env.POSTGRES_DB,
   password: process.env.POSTGRES_PASSWORD,
-  port: process.env.PORT,
+  port: process.env.DB_PORT,
 });
 
 pool.on('connect', () => {
