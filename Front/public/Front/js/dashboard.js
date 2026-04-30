@@ -26,3 +26,9 @@ async function carregarHistorico() {
         <p><strong>Depósito</strong> - R$ 300,00 - 30/03/2026</p>
     `;
 }
+
+// Função de logout (usada no dashboard)
+function logout() {
+    localStorage.removeItem('usuario');
+    window.location.href = 'index.html';
+}
