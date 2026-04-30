@@ -27,7 +27,7 @@ document.getElementById('transferenciaForm')?.addEventListener('submit', async (
 
         if (response.ok) {
             alert('Transferência realizada com sucesso!');
-            window.location.href = '../dashboard.html';
+            window.location.href = 'dashboard.html';
         } else {
             mensagem.textContent = data.erro || 'Erro ao realizar transferência';
         }
