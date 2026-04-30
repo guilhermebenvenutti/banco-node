@@ -8,6 +8,9 @@ services:
       POSTGRES_DB: guigostoso
     ports:
       - "5432:5432"
+    volumes:
+      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - dados_do_banco:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d guigostoso"]
       interval: 10s
@@ -50,3 +53,6 @@ services:
 
 networks:
   banco_guigostoso:
+
+volumes:
+  dados_do_banco:
