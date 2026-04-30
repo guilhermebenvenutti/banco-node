@@ -8,4 +8,4 @@ COPY . .
 
 EXPOSE 3001
 
-CMD ["serve", "-s", "Front", "-l", "3001"]
+CMD ["serve", "Front", "-l", "3001"]
