@@ -109,9 +109,9 @@ document.getElementById('cadastroForm')?.addEventListener('submit', async (e) =>
     
     const mensagem = document.getElementById('mensagem');
 
-    // 1. Valida Nome
+// 1. Valida Nome
     if (!validarNome(nome)) {
-        mensagem.textContent = 'Digite seu nome e sobrenome (mínimo 2 letras cada).';
+        mensagem.textContent = 'Nome inválido. Use apenas letras e certifique-se de digitar nome e sobrenome.';
         return;
     }
 
