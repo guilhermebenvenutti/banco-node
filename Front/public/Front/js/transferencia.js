@@ -1,5 +1,17 @@
+// Usando o IP da AWS
+const API_URL = 'http://52.15.204.177:3000/api';
+
 document.getElementById('transferenciaForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // 1. Pega a conta de origem real que salvamos no Dashboard!
+    const contaOrigem = localStorage.getItem('conta_id');
+    
+    if (!contaOrigem) {
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = 'index.html';
+        return;
+    }
 
     const contaDestino = document.getElementById('contaDestino').value;
     const valor = parseFloat(document.getElementById('valor').value);
@@ -11,15 +23,22 @@ document.getElementById('transferenciaForm')?.addEventListener('submit', async (
         return;
     }
 
+    // Trava de segurança extra no Frontend
+    if (contaOrigem == contaDestino) {
+        mensagem.textContent = 'Você não pode transferir dinheiro para si mesmo';
+        return;
+    }
+
     try {
-        const response = await fetch('http://localhost:3000/api/transacoes/transferir', {
+        // 2. Agora aponta para a API correta na nuvem
+        const response = await fetch(`${API_URL}/transacoes/transferir`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                conta_origem: 1,        // Vamos melhorar isso depois
+                conta_origem: parseInt(contaOrigem),
                 conta_destino: parseInt(contaDestino),
                 valor: valor,
-                descricao: descricao || 'Transferência'
+                descricao: descricao || 'Transferência via App'
             })
         });
 
