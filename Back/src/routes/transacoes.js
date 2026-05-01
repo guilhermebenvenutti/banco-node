@@ -2,44 +2,60 @@ const express = require('express');
 const pool = require('../db');
 const router = express.Router();
 
-// Transferência entre contas
+// Realizar PIX (Transferência via CPF)
 router.post('/transferir', async (req, res) => {
-  const { conta_origem, conta_destino, valor } = req.body;
+    // Agora recebemos o cpf_destino do Frontend
+    const { conta_origem, cpf_destino, valor, descricao } = req.body;
+    const client = await pool.connect(); 
 
-  if (valor <= 0) return res.status(400).json({ erro: 'Valor deve ser maior que zero' });
+    try {
+        await client.query('BEGIN');
 
-  const client = await pool.connect();
+        // 1. MÁGICA: Achar o ID da conta de destino usando o CPF do usuário
+        const resultDestino = await client.query(`
+            SELECT c.id 
+            FROM contas c
+            JOIN usuarios u ON c.usuario_id = u.id
+            WHERE u.cpf = $1 FOR UPDATE
+        `, [cpf_destino]);
 
-  try {
-    await client.query('BEGIN');
+        if (resultDestino.rows.length === 0) {
+            throw new Error('Não encontramos nenhuma conta vinculada a este CPF.');
+        }
+        
+        const conta_destino = resultDestino.rows[0].id; // Achamos o ID!
 
-    // Verifica saldo suficiente
-    const saldoResult = await client.query('SELECT saldo FROM contas WHERE id = $1', [conta_origem]);
-    if (saldoResult.rows.length === 0 || saldoResult.rows[0].saldo < valor) {
-      await client.query('ROLLBACK');
-      return res.status(400).json({ erro: 'Saldo insuficiente' });
+        // 2. Trava de segurança extra
+        if (conta_origem === conta_destino) {
+            throw new Error('Você não pode fazer um PIX para si mesmo.');
+        }
+
+        // 3. Verifica saldo da origem
+        const resultOrigem = await client.query('SELECT saldo FROM contas WHERE id = $1 FOR UPDATE', [conta_origem]);
+        if (resultOrigem.rows.length === 0) throw new Error('Sua conta não foi encontrada.');
+        if (parseFloat(resultOrigem.rows[0].saldo) < valor) throw new Error('Saldo insuficiente para este PIX.');
+
+        // 4. Tira o dinheiro da origem
+        await client.query('UPDATE contas SET saldo = saldo - $1 WHERE id = $2', [valor, conta_origem]);
+
+        // 5. Coloca o dinheiro no destino
+        await client.query('UPDATE contas SET saldo = saldo + $1 WHERE id = $2', [valor, conta_destino]);
+
+        // 6. Salva o extrato com o tipo PIX
+        await client.query(
+            'INSERT INTO transacoes (conta_origem, conta_destino, valor, descricao, tipo) VALUES ($1, $2, $3, $4, $5)',
+            [conta_origem, conta_destino, valor, descricao || 'PIX enviado', 'PIX']
+        );
+
+        await client.query('COMMIT');
+        res.json({ mensagem: 'PIX realizado com sucesso!' });
+
+    } catch (err) {
+        await client.query('ROLLBACK');
+        res.status(400).json({ erro: err.message });
+    } finally {
+        client.release();
     }
-
-    // Debitar da origem
-    await client.query('UPDATE contas SET saldo = saldo - $1 WHERE id = $2', [valor, conta_origem]);
-
-    // Creditar no destino
-    await client.query('UPDATE contas SET saldo = saldo + $1 WHERE id = $2', [valor, conta_destino]);
-
-    // Registrar transação
-    await client.query(
-      'INSERT INTO transacoes (conta_origem, conta_destino, valor) VALUES ($1, $2, $3)',
-      [conta_origem, conta_destino, valor]
-    );
-
-    await client.query('COMMIT');
-    res.json({ mensagem: 'Transferência realizada com sucesso' });
-  } catch (err) {
-    await client.query('ROLLBACK');
-    res.status(500).json({ erro: err.message });
-  } finally {
-    client.release();
-  }
 });
 
 
