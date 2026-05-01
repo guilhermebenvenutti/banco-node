@@ -3,45 +3,57 @@ const bcrypt = require('bcryptjs');
 const pool = require('../db');
 const router = express.Router();
 
-// Cadastro de usuário e criação de conta automática
+// Cadastro de usuário, criação de conta e geração do Cartão de Débito
 router.post('/register', async (req, res) => {
   const { nome, cpf, senha } = req.body;
-  const client = await pool.connect(); // Puxamos o client para fazer uma Transação segura
+  const client = await pool.connect(); 
 
   try {
     const hashedSenha = await bcrypt.hash(senha, 10);
-
-    await client.query('BEGIN'); // Inicia a transação
+    await client.query('BEGIN'); 
 
     // 1. Cria o usuário
     const resultUser = await client.query(
       'INSERT INTO usuarios (nome, cpf, senha) VALUES ($1, $2, $3) RETURNING id, nome, cpf',
       [nome, cpf, hashedSenha]
     );
-    
     const novoUsuario = resultUser.rows[0];
 
-    // 2. Cria a conta bancária zerada para esse usuário
-    await client.query(
-      'INSERT INTO contas (usuario_id, saldo) VALUES ($1, $2)',
+    // 2. Cria a conta bancária zerada e pega o ID da conta gerada
+    const resultConta = await client.query(
+      'INSERT INTO contas (usuario_id, saldo) VALUES ($1, $2) RETURNING id',
       [novoUsuario.id, 0.00]
     );
+    const novaConta = resultConta.rows[0];
 
-    await client.query('COMMIT'); // Se tudo deu certo, salva no banco!
+    // 3. Fabrica o Cartão de Débito (Gerador de dados aleatórios)
+    // Gera 16 números
+    let numeroCartao = '';
+    for(let i=0; i<16; i++) numeroCartao += Math.floor(Math.random() * 10).toString();
+    // Gera CVV de 3 números
+    const cvv = Math.floor(100 + Math.random() * 900).toString();
+    // Validade para daqui a 5 anos
+    const dataAtual = new Date();
+    const validade = String(dataAtual.getMonth() + 1).padStart(2, '0') + '/' + String(dataAtual.getFullYear() + 5).slice(-2);
 
-    res.status(201).json({ mensagem: 'Usuário e conta criados com sucesso', usuario: novoUsuario });
+    await client.query(
+      'INSERT INTO cartoes (conta_id, numero, nome_impresso, validade, cvv) VALUES ($1, $2, $3, $4, $5)',
+      [novaConta.id, numeroCartao, nome.toUpperCase(), validade, cvv]
+    );
+
+    await client.query('COMMIT'); 
+    res.status(201).json({ mensagem: 'Usuário, conta e cartão criados com sucesso', usuario: novoUsuario });
+
   } catch (err) {
-    await client.query('ROLLBACK'); // Se der erro em qualquer passo, desfaz tudo
+    await client.query('ROLLBACK'); 
     console.error("### ERRO REAL DO BANCO ###", err);
-    
-    if (err.code === '23505') { // unique violation (cpf duplicado)
-      return res.status(400).json({ erro: 'CPF já cadastrado' });
-    }
+    if (err.code === '23505') return res.status(400).json({ erro: 'CPF já cadastrado' });
     res.status(500).json({ erro: err.message });
   } finally {
     client.release();
   }
 });
+
 
 // Login
 router.post('/login', async (req, res) => {
