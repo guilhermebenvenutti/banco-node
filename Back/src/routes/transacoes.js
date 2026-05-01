@@ -44,7 +44,7 @@ router.post('/transferir', async (req, res) => {
         // 6. Salva o extrato com o tipo PIX
         await client.query(
             'INSERT INTO transacoes (conta_origem, conta_destino, valor, descricao, tipo) VALUES ($1, $2, $3, $4, $5)',
-            [conta_origem, conta_destino, valor, descricao || 'PIX enviado', 'PIX']
+            [conta_origem, conta_destino, valor, descricao || 'PIX enviado', 'TRANSFERENCIA']
         );
 
         await client.query('COMMIT');
