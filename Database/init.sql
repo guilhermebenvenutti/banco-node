@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS cartoes (
 
 -- Cria o usuário Admin (A senha real é '1', mas salvamos o hash gerado pelo bcrypt)
 INSERT INTO usuarios (nome, cpf, senha) 
-VALUES ('Administrador Teste', '1', '$2b$10$p873XCkOW.BaHRMlZlIpqO7wlVRT8/2tXebjrEkKnkO0O6Ftk2hkO')
+VALUES ('Administrador Teste', '00000000000', '$2b$10$p873XCkOW.BaHRMlZlIpqO7wlVRT8/2tXebjrEkKnkO0O6Ftk2hkO')
 ON CONFLICT (cpf) DO NOTHING;
 
 -- Cria a conta com 10 mil reais (O ID do usuário será 1 pois o banco acabou de nascer)
