@@ -29,4 +29,18 @@ router.get('/usuario/:usuario_id', async (req, res) => {
   }
 });
 
+
+// Buscar o cartão da conta
+router.get('/cartao/:conta_id', async (req, res) => {
+    const { conta_id } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM cartoes WHERE conta_id = $1', [conta_id]);
+        if (result.rows.length === 0) return res.status(404).json({ erro: 'Cartão não encontrado' });
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
+
+
 module.exports = router;

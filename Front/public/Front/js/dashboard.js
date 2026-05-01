@@ -16,25 +16,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function carregarDadosBancarios(usuarioId) {
     try {
-        // 1. Busca a conta e o saldo usando o ID do usuário
+        // 1. Busca a conta e o saldo
         const responseConta = await fetch(`${API_URL}/contas/usuario/${usuarioId}`);
         if (!responseConta.ok) throw new Error('Conta não encontrada');
         
         const conta = await responseConta.json();
-        
-        // Formata o saldo para Reais (ex: R$ 1.500,00)
         const saldoFormatado = parseFloat(conta.saldo).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         document.getElementById('saldo').textContent = saldoFormatado;
-
-        // SALVA O ID DA CONTA (Vamos precisar muito disso para a tela de transferência!)
         localStorage.setItem('conta_id', conta.id);
 
-        // 2. Busca o histórico usando o ID da conta
+        // 2. Busca o Histórico
         carregarHistorico(conta.id);
+
+        // 3. BUSCA O CARTÃO DE DÉBITO
+        carregarCartao(conta.id);
 
     } catch (error) {
         console.error(error);
         document.getElementById('saldo').textContent = 'Erro ao carregar';
+    }
+}
+
+// NOVA FUNÇÃO: Renderiza os dados do cartão na tela
+async function carregarCartao(contaId) {
+    try {
+        const response = await fetch(`${API_URL}/contas/cartao/${contaId}`);
+        if (!response.ok) return; // Se não tiver cartão, apenas não faz nada
+        
+        const cartao = await response.json();
+
+        // Formata o número colocando espaço a cada 4 dígitos
+        const numeroFormatado = cartao.numero.replace(/(.{4})/g, '$1 ').trim();
+
+        document.getElementById('cartaoNumero').textContent = numeroFormatado;
+        document.getElementById('cartaoNome').textContent = cartao.nome_impresso;
+        document.getElementById('cartaoValidade').textContent = cartao.validade;
+
+    } catch (error) {
+        console.error('Erro ao carregar o cartão:', error);
     }
 }
 

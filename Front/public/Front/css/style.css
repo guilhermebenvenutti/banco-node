@@ -74,3 +74,90 @@ a:hover {
     color: #ff5252;
     margin-top: 10px;
 }
+
+
+/* ================= CARTÃO DE DÉBITO ================= */
+.cartao-container {
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.cartao {
+    width: 100%;
+    max-width: 340px;
+    height: 210px;
+    background: linear-gradient(135deg, #141e30, #243b55); /* Cartão estilo Black */
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Efeito de brilho no cartão */
+.cartao::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
+    transform: rotate(30deg);
+    pointer-events: none;
+}
+
+.cartao-logo {
+    font-size: 1.2em;
+    font-weight: bold;
+    font-style: italic;
+    align-self: flex-end;
+    color: #a0d8ff;
+}
+
+.cartao-chip {
+    width: 45px;
+    height: 35px;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    border-radius: 5px;
+    margin-top: -10px;
+}
+
+.cartao-numero {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4em;
+    letter-spacing: 2px;
+    margin-top: 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.cartao-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.cartao-nome {
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.cartao-validade {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.7em;
+    text-align: center;
+}
+
+.cartao-validade span:last-child {
+    font-size: 1.3em;
+}
