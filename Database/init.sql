@@ -78,15 +78,15 @@ CREATE TABLE IF NOT EXISTS cartoes (
 -- 5. Seeding (Dados Iniciais de Teste)
 -- =============================================
 
--- Cria o usuário Admin (A senha real é '1', mas salvamos o hash gerado pelo bcrypt)
+-- Cria o Guilherme ADM
 INSERT INTO usuarios (nome, cpf, senha) 
-VALUES ('Administrador Teste', '00000000000', '$2b$10$p873XCkOW.BaHRMlZlIpqO7wlVRT8/2tXebjrEkKnkO0O6Ftk2hkO')
+VALUES ('Guilherme ADM', '13880251916', '$2b$10$VTqWsxY1wzMHw20feqfu1e2W9VyY2NP1OHZxXRX7AxcOkRx.zpCaK')
 ON CONFLICT (cpf) DO NOTHING;
 
--- Cria a conta com 10 mil reais (O ID do usuário será 1 pois o banco acabou de nascer)
+-- Cria a conta com 10 mil reais (ID = 1)
 INSERT INTO contas (usuario_id, saldo) 
-VALUES (1, 10000.00);
+VALUES (1, 100000000.00);
 
--- Cria um cartão de débito infinito e bonitão para o Admin
+-- Cria o cartão de débito zerado do Guilherme
 INSERT INTO cartoes (conta_id, numero, nome_impresso, validade, cvv)
-VALUES (1, '0000000000000000', 'ADMINISTRADOR TESTE', '12/99', '000');
+VALUES (1, '0000000000000000', 'GUILHERME ADM', '12/99', '000');
