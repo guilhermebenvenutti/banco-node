@@ -29,13 +29,17 @@ function validarCPF(cpf) {
     return true;
 }
 
-// Validador de Nome (Pelo menos 2 palavras, cada uma com 2+ letras)
+// Validador de Nome (Sem números, pelo menos 2 palavras com 2+ letras)
 function validarNome(nome) {
-    const partes = nome.trim().split(/\s+/); // Separa pelos espaços
-    if (partes.length < 2) return false; // Tem que ter nome e sobrenome
-    return partes.every(parte => parte.length >= 2); // Todas as partes precisam ter 2+ letras
-}
+    // 1. Verifica se o nome contém apenas letras (incluindo acentos) e espaços
+    const regexSomenteLetras = /^[a-zA-ZÀ-ÿ\s]+$/;
+    if (!regexSomenteLetras.test(nome)) return false;
 
+    // 2. Verifica se tem nome e sobrenome, com mínimo de 2 letras cada
+    const partes = nome.trim().split(/\s+/); 
+    if (partes.length < 2) return false; 
+    return partes.every(parte => parte.length >= 2); 
+}
 // Validador de Senha (Mínimo 6 chars, 1 letra, 1 número, 1 símbolo)
 function validarSenhaForte(senha) {
     const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/;
