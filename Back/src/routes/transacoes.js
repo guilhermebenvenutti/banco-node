@@ -42,4 +42,21 @@ router.post('/transferir', async (req, res) => {
   }
 });
 
+
+// Ver histórico de transações de uma conta
+router.get('/historico/:conta_id', async (req, res) => {
+  const { conta_id } = req.params;
+  try {
+    // Busca transações onde a conta enviou OU recebeu dinheiro, ordenado da mais nova para a mais velha
+    const result = await pool.query(`
+      SELECT * FROM transacoes 
+      WHERE conta_origem = $1 OR conta_destino = $1 
+      ORDER BY data DESC LIMIT 10
+    `, [conta_id]);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ erro: err.message });
+  }
+});
+
 module.exports = router;

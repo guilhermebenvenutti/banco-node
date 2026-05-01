@@ -17,11 +17,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Ver saldo da conta
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+// Ver saldo da conta buscando pelo ID do USUÁRIO
+router.get('/usuario/:usuario_id', async (req, res) => {
+  const { usuario_id } = req.params;
   try {
-    const result = await pool.query('SELECT id, saldo FROM contas WHERE id = $1', [id]);
+    const result = await pool.query('SELECT id, saldo FROM contas WHERE usuario_id = $1', [usuario_id]);
     if (result.rows.length === 0) return res.status(404).json({ erro: 'Conta não encontrada' });
     res.json(result.rows[0]);
   } catch (err) {
