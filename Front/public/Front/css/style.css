@@ -190,6 +190,7 @@ body {
     margin-bottom: 5px;
     background: linear-gradient(90deg, #00c853, #69f0ae);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 1px;
 }

@@ -22,9 +22,7 @@ services:
   backend:
     networks:
       - banco_guigostoso
-    build:
-      context: ./Back
-      dockerfile: Dockerfile
+    image: guigotoso/banco-node-back:1.0
     container_name: guigostosaob
     environment:
       - POSTGRES_USER=postgres
@@ -44,9 +42,7 @@ services:
   frontend:
     networks:
       - banco_guigostoso
-    build:
-      context: ./Front/public
-      dockerfile: Dockerfile
+    image: guigotoso/banco-node-front:1.0
     container_name: guigostosaof
     ports:
       - "3001:3001"
