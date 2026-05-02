@@ -161,3 +161,177 @@ a:hover {
 .cartao-validade span:last-child {
     font-size: 1.3em;
 }
+
+
+
+/* ================= TELA DE TRANSFERÊNCIA (DARK MODE) ================= */
+/* Fundo escuro atrás do cartão */
+body {
+    background-color: #0a0a0a; 
+}
+
+.transferencia-card {
+    background-color: #141414; /* Cinza super escuro */
+    width: 100%;
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 40px 35px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    border: 1px solid #2a2a2a;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Título com gradiente verde */
+.logo-text {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, #00c853, #69f0ae);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.tela-titulo {
+    font-size: 16px;
+    color: #888888;
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.pix-icon {
+    color: #32bcad; /* Cor oficial do Banco Central */
+    font-size: 18px;
+}
+
+/* Alinhamento dos inputs */
+.input-group {
+    text-align: left;
+    margin-bottom: 22px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Campos de digitação Premium */
+.input-dark {
+    width: 100%;
+    background-color: #1e1e1e;
+    border: 1.5px solid #333333;
+    color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+.input-dark::placeholder {
+    color: #555555;
+}
+
+/* O brilho verde quando clica no campo */
+.input-dark:focus {
+    border-color: #00c853;
+    box-shadow: 0 0 12px rgba(0, 200, 83, 0.2);
+    background-color: #242424;
+}
+
+/* Ícone de R$ embutido no input */
+.input-com-icone {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icone-moeda {
+    position: absolute;
+    left: 16px;
+    color: #00c853;
+    font-weight: bold;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-com-icone .input-dark {
+    padding-left: 50px; /* Dá espaço pro R$ não encavalar no texto */
+}
+
+/* Arrumando o Patinho Feio (Textarea) */
+textarea.input-dark {
+    height: 90px;
+    resize: none;
+}
+
+/* ================= BOTÕES ================= */
+/* Ação Primária: Destaque máximo */
+.btn-primario-dark {
+    width: 100%;
+    background: #00c853;
+    color: #000000; /* Texto preto no fundo verde passa ideia de ação imediata */
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.btn-primario-dark:hover {
+    background: #00e676;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 200, 83, 0.3);
+}
+
+.btn-primario-dark:disabled {
+    background: #333333;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Ação Secundária: Discreta (Botão Fantasma) */
+.btn-secundario-dark {
+    width: 100%;
+    background-color: transparent;
+    color: #888888;
+    border: 1px solid #444444;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-secundario-dark:hover {
+    border-color: #666666;
+    color: #ffffff;
+    background-color: rgba(255,255,255,0.05);
+}
+
+.mensagem-erro {
+    margin-top: 18px;
+    color: #ff5252;
+    font-size: 14px;
+    font-weight: 500;
+}
