@@ -26,7 +26,7 @@ window.onload = async () => {
             const ehSaida = t.conta_origem == contaId;
             const corTexto = ehSaida ? '#ff5252' : '#00c853';
             const textoTipo = ehSaida ? 'Saiu:' : 'Entrou:';
-            const dataFormatada = new Date(t.data_transacao).toLocaleString('pt-BR');
+            const dataFormatada = new Date(t.data).toLocaleString('pt-BR');
             const valorFormatado = parseFloat(t.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
             div.innerHTML = `
@@ -36,7 +36,7 @@ window.onload = async () => {
                     </p>
                     <small style="color: #888;">${t.descricao || 'Transferência'} | ${dataFormatada.split(',')[0]}</small>
                 </div>
-                <button onclick="gerarRecibo('${t.valor}', '${t.descricao}', '${t.data_transacao}', '${t.id}')" 
+                <button onclick="gerarRecibo('${t.valor}', '${t.descricao}', '${t.data}', '${t.id}')" 
                         style="background: transparent; border: 1px solid #444; color: #fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px;">
                     📄 PDF
                 </button>
