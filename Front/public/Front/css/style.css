@@ -336,3 +336,33 @@ textarea.input-dark {
     font-size: 14px;
     font-weight: 500;
 }
+
+
+/* ================= COMPROVANTE PIX ================= */
+.comprovante-detalhes {
+    background-color: #1e1e1e;
+    padding: 25px 20px;
+    border-radius: 12px;
+    border: 1px dashed #333333;
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.comprovante-detalhes p {
+    font-size: 14px;
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 8px;
+}
+
+.comprovante-detalhes strong {
+    color: #888888;
+}
+
+.comprovante-detalhes span {
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}

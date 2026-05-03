@@ -60,8 +60,21 @@ document.getElementById('transferenciaForm')?.addEventListener('submit', async (
         const data = await response.json();
 
         if (response.ok) {
-            alert('PIX realizado com sucesso!');
-            window.location.href = 'dashboard.html';
+            // 1. Esconde o formulário antigo
+            document.getElementById('transferenciaForm').style.display = 'none';
+            document.querySelector('.tela-titulo').style.display = 'none';
+
+            // 2. Preenche os dados do recibo
+            const comp = data.comprovante;
+            document.getElementById('compValor').textContent = parseFloat(comp.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('compNome').textContent = comp.destino;
+            document.getElementById('compCpf').textContent = comp.cpf;
+            document.getElementById('compData').textContent = comp.data;
+            document.getElementById('compID').textContent = comp.id;
+
+            // 3. Mostra o comprovante na tela
+            document.getElementById('areaComprovante').style.display = 'block';
+            mensagem.textContent = ''; 
         } else {
             mensagem.textContent = data.erro || 'Erro ao realizar transferência';
             btn.textContent = textoOriginal;
@@ -73,3 +86,22 @@ document.getElementById('transferenciaForm')?.addEventListener('submit', async (
         btn.disabled = false;
     }
 });
+
+
+
+// ====================== GERAR PDF ======================
+function baixarPDF() {
+    const elemento = document.getElementById('comprovante-print');
+    
+    // Configurações do arquivo PDF
+    const opt = {
+        margin:       1,
+        filename:     'Comprovante_GGBank.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    // Gera o download
+    html2pdf().set(opt).from(elemento).save();
+}

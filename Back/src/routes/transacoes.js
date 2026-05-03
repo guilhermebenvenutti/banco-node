@@ -11,9 +11,9 @@ router.post('/transferir', async (req, res) => {
     try {
         await client.query('BEGIN');
 
-        // 1. MÁGICA: Achar o ID da conta de destino usando o CPF do usuário
+       // 1. MÁGICA: Achar o ID e o NOME da conta de destino usando o CPF
         const resultDestino = await client.query(`
-            SELECT c.id 
+            SELECT c.id, u.nome 
             FROM contas c
             JOIN usuarios u ON c.usuario_id = u.id
             WHERE u.cpf = $1 FOR UPDATE
@@ -48,7 +48,17 @@ router.post('/transferir', async (req, res) => {
         );
 
         await client.query('COMMIT');
-        res.json({ mensagem: 'PIX realizado com sucesso!' });
+// Retorna os dados para montar o PDF no Front-end
+        res.json({ 
+            mensagem: 'PIX realizado com sucesso!',
+            comprovante: {
+                id: Math.floor(Math.random() * 1000000000), // Gera um ID único fictício
+                data: new Date().toLocaleString('pt-BR'),
+                valor: valor,
+                destino: resultDestino.rows[0].nome,
+                cpf: cpf_destino
+            }
+        });
 
     } catch (err) {
         await client.query('ROLLBACK');

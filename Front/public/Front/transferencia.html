@@ -38,10 +38,29 @@
         <button type="submit" class="btn-primario-dark" id="btnTransferir">Fazer PIX</button>
         <button type="button" class="btn-secundario-dark" onclick="window.location.href='dashboard.html'">Voltar ao Dashboard</button>
     </form>
+
+    <!-- TELA DE COMPROVANTE (Escondida por padrão) -->
+        <div id="areaComprovante" style="display: none;">
+            <div id="comprovante-print">
+                <h2 style="color: #00c853; margin-bottom: 20px;">PIX Realizado! 💠</h2>
+                <div class="comprovante-detalhes">
+                    <p><strong>Valor:</strong> <span id="compValor">R$ 0,00</span></p>
+                    <p><strong>Para:</strong> <span id="compNome">---</span></p>
+                    <p><strong>CPF/Chave:</strong> <span id="compCpf">---</span></p>
+                    <p><strong>Data/Hora:</strong> <span id="compData">---</span></p>
+                    <p><strong>Autenticação:</strong> <span id="compID">---</span></p>
+                </div>
+            </div>
+            
+            <button type="button" class="btn-primario-dark" onclick="baixarPDF()">📄 Salvar como PDF</button>
+            <button type="button" class="btn-secundario-dark" onclick="window.location.href='dashboard.html'">Voltar ao Início</button>
+        </div>
     
     <p id="mensagem" class="mensagem-erro"></p>
 </div>
 
+
   <script src="js/transferencia.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
