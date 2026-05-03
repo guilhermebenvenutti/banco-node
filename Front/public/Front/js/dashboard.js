@@ -70,8 +70,11 @@ async function carregarHistorico(contaId) {
             return;
         }
 
-        // Monta a lista de histórico dinamicamente
-        historicoDiv.innerHTML = transacoes.map(t => {
+        // 👇 AQUI ESTÁ A MÁGICA: Corta a lista para pegar apenas os 5 primeiros itens!
+        const ultimasTransacoes = transacoes.slice(0, 5);
+
+        // Monta a lista de histórico dinamicamente usando a nova variável
+        historicoDiv.innerHTML = ultimasTransacoes.map(t => {
             const isOrigem = (t.conta_origem == contaId);
             const tipoTexto = isOrigem ? 'Saiu:' : 'Entrou:';
             const cor = isOrigem ? '#ff5252' : '#00c853'; // Vermelho se saiu, Verde se entrou
@@ -90,7 +93,6 @@ async function carregarHistorico(contaId) {
         historicoDiv.innerHTML = '<p class="error">Erro ao carregar histórico.</p>';
     }
 }
-
 // Função de logout 
 function logout() {
     localStorage.removeItem('usuario');

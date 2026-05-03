@@ -68,7 +68,10 @@ document.getElementById('transferenciaForm')?.addEventListener('submit', async (
             const comp = data.comprovante;
             document.getElementById('compValor').textContent = parseFloat(comp.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             document.getElementById('compNome').textContent = comp.destino;
-            document.getElementById('compCpf').textContent = comp.cpf;
+            
+            // Aplica a máscara no CPF (ex: 11122233344 vira 111.222.333-44)
+            const cpfFormatado = comp.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            document.getElementById('compCpf').textContent = cpfFormatado;
             document.getElementById('compData').textContent = comp.data;
             document.getElementById('compID').textContent = comp.id;
 
