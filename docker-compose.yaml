@@ -42,7 +42,7 @@ services:
   frontend:
     networks:
       - banco_guigostoso
-    image: guigotoso/banco-node-front:1.3
+    image: guigotoso/banco-node-front:1.4
     container_name: guigostosaof
     ports:
       - "3001:3001"
