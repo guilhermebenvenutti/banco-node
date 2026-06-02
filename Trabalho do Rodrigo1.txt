@@ -65,3 +65,6 @@ Classificação dos Testes:
 Testes Unitários: T4
 Testes de Integração: T1, T2, T3, T5, T6
 Testes E2E: Nenhum
+
+
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=guilhermebenvenutti_banco-node&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=guilhermebenvenutti_banco-node)
